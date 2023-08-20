@@ -55,6 +55,7 @@ public class Moves {
             if (win) {
                 this.board.setGameOver(true);
                 this.board.setWinner(player);
+                return;
             }
         }
 
@@ -70,17 +71,34 @@ public class Moves {
             if (win) {
                 this.board.setWinner(player);
                 this.board.setGameOver(true);
-            }
-        }
-
-        // check for diagonal win
-        for (int i = 0; i < board.getBoard()[0].length; i++) {
-            if (! board.getBoard()[i][i].equals(player.marker())) {
                 return;
             }
         }
-        this.board.setGameOver(true);
+
+        // check for a diagonal win
+        win = true;
+        for (int i = 0; i < board.getBoard()[0].length; i++) {
+            if (! board.getBoard()[i][i].equals(player.marker())) {
+                win = false;
+                break;
+            }
+        }
+        if (win) {
+            this.board.setWinner(player);
+            this.board.setGameOver(true);
+            return;
+        }
+
+        // check for mirror diagonal win
+        int col = board.getBoard()[0].length - 1;
+        for (int row = 0; row < board.getBoard()[0].length; row++) {
+            if (! board.getBoard()[row][col].equals(player.marker())) {
+                return;
+            }
+            col--;
+        }
         this.board.setWinner(player);
+        this.board.setGameOver(true);
     }
 
     private final Board board = new Board();
